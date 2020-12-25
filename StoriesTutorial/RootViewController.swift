@@ -5,9 +5,6 @@
 //  Created by Alexander Kraev on 24.12.2020.
 //
 
-import Foundation
-
-
 import UIKit
 import BlueprintUI
 import BlueprintUICommonControls
