@@ -7,7 +7,7 @@ This tutorial demonstrates two ways of showing stories:
 
 >- simple:
 <p align="center">
-<img src="images/short_story.gif" alt="Example without labels" height="320">
+<img src="images/short_story.gif" alt="Example without labels" height="160">
 </p>
 
 >- customized (with labels and buttons on each slide):
