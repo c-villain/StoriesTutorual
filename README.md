@@ -5,12 +5,12 @@ Declaratively UI constructed popular Instagram Scrolling Photos with some improv
 ## About
 This tutorial demonstrates two ways of showing stories:
 
-- simple:
+>- simple:
 <p align="center">
 <img src="images/short_story.gif" alt="Example without labels" height="320">
 </p>
 
-- customized (with labels and buttons on each slide):
+>- customized (with labels and buttons on each slide):
 
 <p align="center">
 <img src="images/long_story.gif" alt="Example with labels" height="480">
