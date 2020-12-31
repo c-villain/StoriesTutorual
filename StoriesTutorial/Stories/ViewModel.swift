@@ -69,6 +69,7 @@ extension ViewModel {
     func startTimer(){
         self.storiesEnd = false
     
+        stopTimer() //if timer not nil
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             var newProgress = self.progress + (0.1 / 5.0) //5 seconds length
             if Int(newProgress) >= self.slides.count {
