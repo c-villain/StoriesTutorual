@@ -54,24 +54,24 @@ final class StoriesPlayerViewController: UIViewController {
     private func setupBinding() {
         self.viewModel
             .$isLoading
-            .sink { isLoading in
+            .sink { [weak self] isLoading in
                 if (!isLoading) {
-                    self.viewModel.startTimer() //start timer for stories
-                    self.update()
+                    self?.viewModel.startTimer() //start timer for stories
+                    self?.update()
                 }
             }
             .store(in: &cancellables)
         
-        self.viewModel.$progress.sink { _ in
-            self.update()
+        self.viewModel.$progress.sink { [weak self] _ in
+            self?.update()
         }.store(in: &cancellables)
         
         self.viewModel
             .$storiesEnd
-            .sink { isEnd in
+            .sink { [weak self] isEnd in
                 if (isEnd) {
-                    self.viewModel.stopTimer()
-                    self.viewModel.close()
+                    self?.viewModel.stopTimer()
+                    self?.viewModel.close()
                 }
                 else { }
             }
@@ -81,30 +81,30 @@ final class StoriesPlayerViewController: UIViewController {
     private func update() {
         blueprintView.element = UIStoryScreen(viewModel: self.viewModel){
             
-            $0.onNextTap = {
-                self.viewModel.stopTimer()
-                self.viewModel.advance(by: 1)
-                self.viewModel.startTimer()
+            $0.onNextTap = { [weak self] in
+                self?.viewModel.stopTimer()
+                self?.viewModel.advance(by: 1)
+                self?.viewModel.startTimer()
             }
-            $0.onPreviousTap = {
-                self.viewModel.stopTimer()
-                self.viewModel.advance(by: -1)
-                self.viewModel.startTimer()
+            $0.onPreviousTap = { [weak self] in
+                self?.viewModel.stopTimer()
+                self?.viewModel.advance(by: -1)
+                self?.viewModel.startTimer()
             }
-            $0.onCloseTap = { slideNum in
-                self.viewModel.stopTimer()
-                self.viewModel.close()
+            $0.onCloseTap = { [weak self] slideNum in
+                self?.viewModel.stopTimer()
+                self?.viewModel.close()
             }
-            $0.onLastSlideNextTap = {
-                self.viewModel.stopTimer()
-                self.viewModel.close()
+            $0.onLastSlideNextTap = { [weak self] in
+                self?.viewModel.stopTimer()
+                self?.viewModel.close()
             }
-            $0.onButtonTap = { url in
-                self.viewModel.stopTimer()
+            $0.onButtonTap = { [weak self] url in
+                self?.viewModel.stopTimer()
                 if url != nil {
-                    self.routeToURL(url)
+                    self?.routeToURL(url)
                 } else {
-                    self.viewModel.close()
+                    self?.viewModel.close()
                 }
             }
         }
