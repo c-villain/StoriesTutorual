@@ -1,16 +1,16 @@
 # Instagram Story - Using Blueprint & OpenCombine
 
-Declaratively UI constructed popular Instagram Scrolling Photos with some improvements for iOS, written in Swift.
+**Declaratively UI** constructed popular Instagram Scrolling Photos with some improvements for iOS, written in Swift.
 
 ## About
-This tutorial demonstrates two ways of showing stories:
+This tutorial demonstrates **two ways** of showing stories:
 
-> simple:
+- **_simple_**:
 <p align="center">
 <img src="images/short_story.gif" alt="Example without labels" height="160">
 </p>
 
-> customized (with labels and buttons on each slide):
+- **_customized_ (with labels and buttons on each slide)**:
 
 <p align="center">
 <img src="images/long_story.gif" alt="Example with labels" height="480">
