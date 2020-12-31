@@ -13,7 +13,7 @@ import BlueprintUICommonControls
 
 struct UIStoryScreenHeader: ProxyElement {
     
-    var spacingBetweenLoaders: CGFloat = 8
+    var spacingBetweenLoaders: CGFloat = 5
     
     var viewModel: ViewModel
     var onCloseTap : ( () -> () )?
@@ -31,10 +31,14 @@ struct UIStoryScreenHeader: ProxyElement {
         EnvironmentReader { (environment) -> Element in
             GeometryReader { (geometry) -> Element in
                 
-                guard self.viewModel.slides.count > 0 else { return Empty() }
+                let slidesCount = self.viewModel.slides.count
+                guard slidesCount > 0 else { return Empty() }
                 let screenWidth = geometry.constraint.width
                 
-                let size: CGSize = .init(width: screenWidth.maximum / CGFloat(self.viewModel.slides.count) - spacingBetweenLoaders, height: 4)
+                let width: CGFloat = .init( (screenWidth.maximum - 16.0 //for letf and right insets
+                                                - CGFloat(slidesCount - 1)
+                                                * spacingBetweenLoaders) / CGFloat(slidesCount) )
+                let size: CGSize = .init(width: width, height: 4)
                 
                 return Row{ col in
                     col.horizontalUnderflow = .spaceEvenly
