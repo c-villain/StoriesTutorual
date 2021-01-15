@@ -44,11 +44,40 @@ final class StoriesPlayerViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         update()
         setupBinding()
-        /// Add "long" press gesture recognizer for "freeze" stories 👇🏻
-        let tap: UILongPressGestureRecognizer = .init(target: self, action: #selector(tapHandler))
+        /// Add "long" press gesture recognizer for "freeze" onboarding
+        let tap: UILongPressGestureRecognizer = .init(target: self, action: #selector(panGestureRecognizerHandler))
         tap.minimumPressDuration = 0.2
         tap.delaysTouchesBegan = true
         blueprintView.addGestureRecognizer(tap)
+        
+        /// Add pan gesture for sliding onboarding:
+        let swipeDown: UIPanGestureRecognizer = .init(target: self, action: #selector(panGestureRecognizerHandler))
+        blueprintView.addGestureRecognizer(swipeDown)
+    }
+    
+    /// var to store initial touch position for pan gesture:
+    var initialTouchPoint: CGPoint = .init(x: 0, y: 0)
+    
+    @objc func panGestureRecognizerHandler(gesture: UITapGestureRecognizer) {
+        let touchPoint = gesture.location(in: self.view?.window)
+        if gesture.state == .began {
+            initialTouchPoint = touchPoint
+            self.viewModel.freezeTimer()
+        } else if gesture.state == .changed {
+            if touchPoint.y - initialTouchPoint.y > 0 {
+                blueprintView.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: blueprintView.frame.size.width, height: blueprintView.frame.size.height)
+            }
+        } else if gesture.state == .ended || gesture.state == .cancelled {
+            if touchPoint.y - initialTouchPoint.y > 150 {
+                self.viewModel.stopTimer()
+                self.viewModel.close()
+            } else {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.blueprintView.frame = CGRect(x: 0, y: 0, width: self.blueprintView.frame.size.width, height: self.blueprintView.frame.size.height)
+                    self.viewModel.resumeTimer()
+                })
+            }
+        }
     }
     
     private func setupBinding() {
@@ -110,13 +139,6 @@ final class StoriesPlayerViewController: UIViewController {
         }
     }
     
-    @objc func tapHandler(gesture: UITapGestureRecognizer) {
-        if gesture.state == .began || gesture.state == .changed {
-            self.viewModel.freezeTimer()
-        } else if gesture.state == .ended {
-            self.viewModel.resumeTimer()
-        }
-    }
 }
 
 extension StoriesPlayerViewController {

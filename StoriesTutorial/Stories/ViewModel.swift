@@ -109,7 +109,10 @@ extension ViewModel {
 extension ViewModel {
     func close() {
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        delegate.router.closeStories()
+        DispatchQueue.main.async {
+            delegate.router.closeStories()
+        }
+        
     }
 }
 

@@ -18,6 +18,8 @@ struct UIStoryScreenHeader: ProxyElement {
     var viewModel: ViewModel
     var onCloseTap : ( () -> () )?
     
+    private var safeAreaInsets: UIEdgeInsets? = UIApplication.shared.keyWindow?.safeAreaInsets
+    
     public init(viewModel: ViewModel, configure: (inout UIStoryScreenHeader) -> Void = { _ in }) {
         self.viewModel = viewModel
         configure(&self)
@@ -29,46 +31,48 @@ struct UIStoryScreenHeader: ProxyElement {
 
     var loaderRow: Element {
         EnvironmentReader { (environment) -> Element in
-            GeometryReader { (geometry) -> Element in
+            
+            let slidesCount = self.viewModel.slides.count
+            guard slidesCount > 0 else { return Empty() }
+            let screenWidth = UIScreen.main.bounds.width
+            
+            let width: CGFloat = .init( (screenWidth - 16.0 - CGFloat(slidesCount - 1) * spacingBetweenLoaders) / CGFloat(slidesCount) )
+            let size: CGSize = .init(width: width, height: 4)
+            let topInset = (safeAreaInsets?.top ?? environment.safeAreaInsets.top)
+                + 8
+            return Row{ col in
+                col.horizontalUnderflow = .spaceEvenly
                 
-                let slidesCount = self.viewModel.slides.count
-                guard slidesCount > 0 else { return Empty() }
-                let screenWidth = geometry.constraint.width
-                
-                let width: CGFloat = .init( (screenWidth.maximum - 16.0 //for letf and right insets
-                                                - CGFloat(slidesCount - 1)
-                                                * spacingBetweenLoaders) / CGFloat(slidesCount) )
-                let size: CGSize = .init(width: width, height: 4)
-                
-                return Row{ col in
-                    col.horizontalUnderflow = .spaceEvenly
+                for i in 1...self.viewModel.slides.count {
                     
-                    for i in 1...self.viewModel.slides.count {
-                        
-                        col.add(child: Loader(progress : min( max( CGFloat(i) - (CGFloat(self.viewModel.progress) ), 0.0) , 1.0), size: size))
-                    }
-                }.inset(top: environment.safeAreaInsets.top + 8, bottom: 0, left: 8, right: 8)
-            }
+                    col.add(child: Loader(progress : min( max( CGFloat(i) - (CGFloat(self.viewModel.progress) ), 0.0) , 1.0), size: size))
+                }
+            }.inset(top: topInset, bottom: 0, left: 8, right: 8)
         }
+        
     }
     
     var closeButton: Element {
         EnvironmentReader { (environment) -> Element in //for safe area insets
-            GeometryReader { (geometry) -> Element in
+            
+            let topInset = (safeAreaInsets?.top ?? environment.safeAreaInsets.top)
+                + 8 //inset for loader
+                + 4 //height of loader
+                + 10 //spacer between laoder and button
+            
+            let leftInset: CGFloat = UIScreen.main.bounds.width
+                - 18 //button size
+                - 15 // right inset
+            
+            return Row { row in
                 
-                let leftInset: CGFloat = geometry.constraint.width.maximum
-                                - 24 //button size
-                                - 12 // right inset
-                return Row { row in
-                    
-                    let closeButton = Image(image: UIImage(named: "close"),
-                                            contentMode: .aspectFill)
-                        .constrainedTo(width: .absolute(18), height: .absolute(18)).tappable {
-                            onCloseTap?()
-                        }
-                    row.add(child: closeButton)
-                }.inset(top: environment.safeAreaInsets.top + 8 + 4 + 16, bottom: 0, left: leftInset, right: 8)
-            }
+                let closeButton = Image(image: UIImage(named: "close"),
+                                        contentMode: .aspectFill)
+                    .constrainedTo(width: .absolute(18), height: .absolute(18)).tappable {
+                        onCloseTap?()
+                    }
+                row.add(child: closeButton)
+            }.inset(top: topInset, bottom: 0, left: leftInset, right: 8)
         }
     }
 }

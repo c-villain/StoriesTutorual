@@ -25,6 +25,8 @@ struct UISlide : ProxyElement {
 
     private var isFirstDisplayed = false
     
+    private var safeAreaInsets: UIEdgeInsets? = UIApplication.shared.keyWindow?.safeAreaInsets
+    
     // MARK: init for configure tapping on screen area for transition between stories
     public init(slide: Slide, showLabels: Bool, configure: (inout UISlide) -> Void = { _ in }) {
         self.showLabels = showLabels
@@ -70,7 +72,11 @@ struct UISlide : ProxyElement {
     // MARK: title, desc, image
     var upperItems: Element {
         EnvironmentReader { (environment) -> Element in
-            Column { col in
+            
+            let topInset = (safeAreaInsets?.top ?? environment.safeAreaInsets.top)
+                + 60
+            
+            return Column { col in
                 
                 col.horizontalAlignment = .fill
                 col.verticalUnderflow = .justifyToStart
@@ -79,7 +85,7 @@ struct UISlide : ProxyElement {
                 let header = Label(text: slide.title) { label in
                     label.color = slide.titleColor
                     label.font = .systemFont(ofSize: 18.0, weight: .semibold)
-                }.inset(top: environment.safeAreaInsets.top + 60, bottom: 0, left: 24, right: 24)
+                }.inset(top: topInset, bottom: 0, left: 24, right: 24)
                 
                 col.add(child: header)
                 
@@ -99,21 +105,24 @@ struct UISlide : ProxyElement {
     // MARK: bottom button
     var button: Element {
         EnvironmentReader { (environment) -> Element in
-        Column { col in
+            let bottomInset = (safeAreaInsets?.bottom ?? environment.safeAreaInsets.bottom)
+                + 16
             
-            col.horizontalAlignment = .fill
-            col.verticalUnderflow = .justifyToEnd
-            
-            /// add button to stack
-            
-            if let buttonText = slide.buttonText, !buttonText.isEmpty {
+            return Column { col in
                 
-                let button = Label(text: buttonText) { label in
-                    label.alignment = .center
-                    label.font = .systemFont(ofSize: 15.0, weight: .semibold)
-                }
+                col.horizontalAlignment = .fill
+                col.verticalUnderflow = .justifyToEnd
                 
-                .box(
+                /// add button to stack
+                
+                if let buttonText = slide.buttonText, !buttonText.isEmpty {
+                    
+                    let button = Label(text: buttonText) { label in
+                        label.alignment = .center
+                        label.font = .systemFont(ofSize: 15.0, weight: .semibold)
+                    }
+                    
+                    .box(
                     background: slide.buttonColor,
                     corners: .rounded(radius: 14.0),
                     shadow: .simple(
@@ -124,7 +133,7 @@ struct UISlide : ProxyElement {
                     )
                 )
                 .constrainedTo(width: .absolute(288), height: .absolute(48))
-                .inset(top: 0, bottom: environment.safeAreaInsets.bottom + 16, left: 24, right: 24)
+                .inset(top: 0, bottom: bottomInset, left: 24, right: 24)
                 .tappable {
                     onButtonTap?(slide.buttonLink)
                 }
