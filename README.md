@@ -1,5 +1,11 @@
 # Instagram Story - Using Blueprint & OpenCombine
 
+<p align="center">
+     <img src="https://img.shields.io/badge/license-MIT-blue" />
+    <img src="https://img.shields.io/badge/platform-IOS-blue" />
+    <img src="https://img.shields.io/badge/language-Swift%205.0-blue" />
+</p>
+
 **Declaratively UI** constructed popular Instagram Scrolling Photos with some improvements for iOS, written in Swift.
 
 ## About
@@ -34,6 +40,14 @@ Based on [Blueprint](https://github.com/square/Blueprint) and [OpenCombine](http
 ## Requirements
 
 - iOS 11 or later
+
+## Contributing
+If you like this repository, please do :star: to make this useful for others. Feel free to contribute by [open an Issue](https://github.com/c-villain/StoriesTutorual/issues/new/choose) or [create a Pull Request](https://github.com/c-villain/StoriesTutorual/compare)
+
+## License
+
+All the code here is under MIT license. Which means you could do virtually anything with the code.
+I will appreciate it very much if you keep an attribution where appropriate.
 
 ## Special thanks
 
