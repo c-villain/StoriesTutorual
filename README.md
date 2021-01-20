@@ -20,6 +20,17 @@ This tutorial demonstrates **two ways** of showing stories:
 
 Based on [Blueprint](https://github.com/square/Blueprint) and [OpenCombine](https://github.com/OpenCombine/OpenCombine) with MVVM architecture. 
 
+## Features
+
+* You can add labels and tappable buttons to each slide
+* Supports all orientations on iPhone and iPad
+* Long press pause and play
+* Left tap and Right-tap gestures to switch between slides
+* Closing story by swiping down
+* If there is no user interruption, it will automatically move to the next slide
+* It will automatically close story after the progress bar completes
+* Progress bar is very smooth
+
 ## Requirements
 
 - iOS 11 or later
