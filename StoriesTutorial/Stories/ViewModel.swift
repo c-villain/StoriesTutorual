@@ -15,7 +15,7 @@ final class ViewModel {
     @OpenCombine.Published var isLoading = false
     
     // MARK: for story timer slide
-    private var timer: Timer?
+    private var displayLink: CADisplayLink?
     @OpenCombine.Published var progress: Double = 0
     @OpenCombine.Published var storiesEnd: Bool = false
     
@@ -68,17 +68,25 @@ extension ViewModel {
     
     func startTimer(){
         self.storiesEnd = false
+
+        stopTimer()
+        
+        self.displayLink = .init(target: self, selector: #selector(update))
+        guard let displayLink = self.displayLink else { return }
+        displayLink.add(to: .current, forMode: .common)
+
+    }
     
-        stopTimer() //if timer not nil
-        self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-            var newProgress = self.progress + (0.1 / 5.0) //5 seconds length
-            if Int(newProgress) >= self.slides.count {
-                self.storiesEnd = true
-                newProgress = 0
-            }
-            self.progress = newProgress
+    @objc private func update() {
+        guard let displayLink = self.displayLink else { return }
+        /// duration of one frame:
+        let duration = displayLink.targetTimestamp - displayLink.timestamp
+        var newProgress = self.progress + (duration / 5.0) //5.0 duration of slide
+        if Int(newProgress) >= slides.count {
+            self.storiesEnd = true
+            newProgress = 0
         }
-        self.timer?.tolerance = 0.2
+        self.progress = newProgress
     }
     
     func advance(by number: Int) {
@@ -87,21 +95,21 @@ extension ViewModel {
     }
     
     func freezeTimer(){
-        if self.timer != nil {
-            timer!.invalidate()
+        if self.displayLink != nil {
+            self.displayLink?.invalidate()
         }
     }
     
     func resumeTimer(){
-        if self.timer != nil {
+        if self.displayLink != nil {
             self.startTimer()
         }
     }
     
     func stopTimer(){
-        if self.timer != nil {
-            timer!.invalidate()
-            self.timer = nil
+        if self.displayLink != nil {
+            self.displayLink?.invalidate()
+            self.displayLink = nil
         }
     }
 }
