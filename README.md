@@ -9,6 +9,8 @@
 
 **Declaratively UI** constructed popular Instagram Scrolling Photos with some improvements for iOS, written in Swift.
 
+👨🏻‍💻 Feel free to subscribe to channel **[SwiftUI dev](https://t.me/swiftui_dev)** in telegram.
+
 ## About
 This tutorial demonstrates **two ways** of showing stories:
 
