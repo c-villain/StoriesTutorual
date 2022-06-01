@@ -15,14 +15,15 @@
 This tutorial demonstrates **two ways** of showing stories:
 
 - **_simple_**:
+
 <p align="center">
-<img src="images/short_story.gif" alt="Example without labels" height="160">
+<img src="images/short_story.gif" alt="Example without labels" height="160" width="260">
 </p>
 
 - **_customized_ (with labels and buttons on each slide)**:
 
 <p align="center">
-<img src="images/long_story.gif" alt="Example with labels" height="480">
+<img src="images/long_story.gif" alt="Example with labels" height="480" width="260">
 </p>
 
 ## Architecture
