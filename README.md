@@ -5,6 +5,9 @@
     <img src="https://img.shields.io/badge/iOS%20-11.0-blue" />
 </p>
 
+[![contact: @lexkraev](https://img.shields.io/badge/contact-%40lexkraev-blue.svg?style=flat)](https://t.me/lexkraev)
+[![Telegram Group](https://img.shields.io/endpoint?color=neon&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fswiftui_dev)](https://telegram.dog/swiftui_dev)
+
 **Declaratively UI** constructed popular Instagram Scrolling Photos with some improvements for iOS, written in Swift.
 
 👨🏻‍💻 Feel free to subscribe to channel **[SwiftUI dev](https://t.me/swiftui_dev)** in telegram.
